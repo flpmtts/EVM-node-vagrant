@@ -1,0 +1,17 @@
+Vagrant.configure("2") do |config|
+  config.vm.box = "debian/bullseye64"
+  config.vm.hostname = "ethereum-node"
+  config.vm.network "private_network", type: "dhcp"
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = "2048"
+    vb.cpus = 2
+  end
+
+  config.vm.provision "file", source: "setup_geth.sh", destination: "/home/vagrant/setup_geth.sh"
+  config.vm.provision "shell", inline: <<-SHELL
+    chmod +x /home/vagrant/setup_geth.sh
+    sudo /home/vagrant/setup_geth.sh
+  SHELL
+end
+
